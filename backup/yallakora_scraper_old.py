@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import os
 
 
 def validate_date_format(date_text):
@@ -35,10 +36,15 @@ def main(page):
     src = page.content
     soup =  BeautifulSoup(src, "lxml")
     matches_details = []
-    championships = soup.find_all("div", {'class' : '2893 matchCard matchesList'})
+    # Find all divs with class containing 'matchCard matchesList'
+    championships = soup.find_all("div", class_=lambda x: x and 'matchCard matchesList' in x)
     def get_match_info(championships):
         championship_title = championships.contents[1].find("h2")
-        all_matches = championships.contents[3].find_all("div", {'class': 'item finish liItem'}) + championships.contents[3].find_all("div", {'class': 'item future liItem'}) + championships.contents[3].find_all("div", {'class': 'item now liItem'})
+        # Convert ResultSets to lists before concatenating
+        finished_matches = list(championships.contents[3].find_all("div", {'class': 'item finish liItem'}))
+        future_matches = list(championships.contents[3].find_all("div", {'class': 'item future liItem'}))
+        current_matches = list(championships.contents[3].find_all("div", {'class': 'item now liItem'}))
+        all_matches = finished_matches + future_matches + current_matches
         number_of_matches = len(all_matches)
         for i in range(number_of_matches):
             # get team names
@@ -59,14 +65,30 @@ def main(page):
             })
             # print(f"Match: {team_A} vs {team_B} | Score: {score} | Time: {match_time} | Championship: {championship_title.text.strip()}")
 
+    if len(championships) == 0:
+        print(f"No matches found for {date}. Please check if there are any matches scheduled for this date.")
+        return
+    
     get_match_info(championships[0])
+
+    if not matches_details:
+        print(f"No match details extracted for {date}.")
+        return
 
     # write the match details to a CSV file
     key = matches_details[0].keys()
-    with open(f"C:\\Learn Programming\\python-beautifulsoup-web-scraper\\matches_{date}.csv", 'w', newline='', encoding='utf-8-sig') as output_file:
+    
+    # Create data directory if it doesn't exist
+    data_dir = "data"
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    
+    # Save to data directory
+    filename = os.path.join(data_dir, f"matches_{date}.csv")
+    with open(filename, 'w', newline='', encoding='utf-8-sig') as output_file:
         dict_writer = csv.DictWriter(output_file, key, delimiter=';')
         dict_writer.writeheader()
         dict_writer.writerows(matches_details)
-        print(f"Matches details for {date} have been written to matches-details_{date}.csv")
+        print(f"✅ Matches details for {date} have been written to {filename}")
 
 main(page)
