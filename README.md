@@ -1,264 +1,82 @@
 # 🏆 YallaKora Match Scraper
 
-[![CI/CD Pipeline](https://github.com/KhalilAmamri/python-beautifulsoup-web-scraper/actions/workflows/ci.yml/badge.svg)](https://github.com/KhalilAmamri/python-beautifulsoup-web-scraper/actions/workflows/ci.yml)
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# YallaKora Match Scraper (Simple Version)
 
-A professional Python web scraper that extracts football match data from [YallaKora](https://www.yallakora.com/) for any specified date and saves it to structured CSV files.
+This is a very simple Python script that gets football match data from the YallaKora website for a date you choose and saves the results into a CSV file inside the `data/` folder.
 
----
+## ✅ What It Does
 
-## ✨ Features
+- Asks you for a date (format: `dd-mm-yyyy`)
+- Downloads the match center page for that date
+- Collects all matches (all championships on that day)
+- Saves them to: `data/matches_<date>.csv`
 
-- 🎯 **Smart Date Validation**: Robust date format validation with proper error handling
-- 🌐 **Reliable Web Scraping**: Handles dynamic website structure changes
-- 🏆 **Multi-Championship Support**: Extracts matches from all available championships
-- 📊 **Structured Data Export**: Clean CSV output with proper encoding
-- 🔧 **Professional Code Structure**: Object-oriented design with proper error handling
-- 📝 **Comprehensive Logging**: Detailed logs for debugging and monitoring
-- 🧪 **Unit Tested**: Comprehensive test suite for reliability
-- 🚀 **CI/CD Ready**: GitHub Actions integration for automated testing
-- 💻 **Command Line Interface**: Easy-to-use CLI with multiple options
-
----
-
-## 📋 Project Structure
+## 🗂 Project Structure
 
 ```
 python-beautifulsoup-web-scraper/
-├── src/
-│   ├── yallakora_scraper.py    # Main scraper class
-│   └── config.py               # Configuration settings
-├── tests/
-│   └── test_scraper.py         # Unit tests
-├── data/                       # Output CSV files (auto-created)
-├── .github/
-│   └── workflows/
-│       └── ci.yml              # GitHub Actions CI/CD
-├── cli.py                      # Command line interface
-├── setup.py                    # Package setup
-├── requirements.txt            # Dependencies
-├── .env.example               # Environment variables template
-├── .gitignore                 # Git ignore rules
-└── README.md                  # Project documentation
+├── scraper.py          # The only script you need to run
+├── requirements.txt    # Needed libraries
+├── data/               # CSV files will be saved here
+├── README.md           # This file
+└── LICENSE             # Open-source license
 ```
 
----
+## 🚀 How To Use
 
-## 🖥️ Preview
+1. Install Python 3.8 or newer
+2. Install the required libraries:
 
-📁 Example CSV output:
+```
+pip install -r requirements.txt
+```
 
-```csv
+3. Run the scraper:
+
+```
+python scraper.py
+```
+
+4. Enter a date when asked (example: `29-09-2025`)
+5. Open the `data/` folder to see the CSV file
+
+## 📄 Example CSV Output
+
+```
 championship;first_team;second_team;score;time
-كأس العالم للأندية;الترجى الرياضي;تشيلسي;0 - 3;04:00
-كأس العالم للأندية;لوس أنجلوس;فلامنجو;1 - 1;04:00
 الدوري المصري;الأهلي;الزمالك;2 - 1;21:00
 ```
 
----
+## ❓ FAQ
 
-## 🚀 Quick Start
+**Where are the CSV files saved?** In the `data/` folder.
 
-### 1. Clone the Repository
+**What if there are no matches?** The script will tell you. No file is created.
 
-```bash
-git clone https://github.com/KhalilAmamri/python-beautifulsoup-web-scraper.git
-cd python-beautifulsoup-web-scraper
+**Why is the score sometimes `- - -`?** The match hasn’t been played or no result yet.
+
+## ⚠ Notes
+
+- You need an internet connection.
+- If YallaKora changes its website layout, the scraper may stop working.
+
+## 🛠 Requirements
+
+See `requirements.txt`:
+
+```
+requests
+beautifulsoup4
+lxml
 ```
 
-### 2. Install Dependencies
+## 🧾 License
 
-```bash
-# Using pip
-pip install -r requirements.txt
-
-# Or using the setup script
-pip install -e .
-```
-
-### 3. Run the Scraper
-
-#### Interactive Mode
-
-```bash
-python src/yallakora_scraper.py
-```
-
-#### Command Line Interface
-
-```bash
-# Scrape specific date
-python cli.py --date 29-09-2025
-
-# Scrape today's matches
-python cli.py --today
-
-# Scrape yesterday's matches
-python cli.py --yesterday
-
-# Custom output directory
-python cli.py --date 29-09-2025 --output my_data
-
-# Verbose logging
-python cli.py --date 29-09-2025 --verbose
-```
+This project is licensed under the MIT License. See `LICENSE`.
 
 ---
 
-## 🧪 Testing
+Made simple for learning. Enjoy! ✅
 
-Run the test suite:
-
-```bash
-# Install test dependencies
-pip install pytest pytest-cov
-
-# Run tests
-pytest tests/ -v
-
-# Run tests with coverage
-pytest tests/ -v --cov=src --cov-report=html
-```
-
----
-
-## 📊 Code Quality
-
-This project maintains high code quality standards:
-
-```bash
-# Install development tools
-pip install black isort flake8 mypy
-
-# Format code
-black src/
-isort src/
-
-# Lint code
-flake8 src/
-
-# Type checking
-mypy src/ --ignore-missing-imports
-```
-
----
-
-## 🔧 Configuration
-
-Copy `.env.example` to `.env` and customize:
-
-```bash
-cp .env.example .env
-```
-
-Available configuration options:
-
-- `LOG_LEVEL`: Logging level (DEBUG, INFO, WARNING, ERROR)
-- `OUTPUT_DIR`: Directory for CSV files
-- `REQUEST_TIMEOUT`: HTTP request timeout in seconds
-
----
-
-## 📦 Requirements
-
-- **Python**: 3.8+ (tested on 3.8, 3.9, 3.10, 3.11, 3.12, 3.13)
-- **Dependencies**:
-  - `requests` >= 2.31.0
-  - `beautifulsoup4` >= 4.12.0
-  - `lxml` >= 4.9.0
-- **Internet Connection**: Required for web scraping
-
----
-
-## 🛠️ Technologies Used
-
-- **Python 3.8+** 🐍
-- **Web Scraping**: `requests` + `BeautifulSoup4`
-- **Data Processing**: `csv`, `pandas-compatible`
-- **Testing**: `pytest`, `unittest`
-- **CI/CD**: GitHub Actions
-- **Code Quality**: `black`, `isort`, `flake8`, `mypy`
-
----
-
-## 📈 Recent Improvements
-
-- ✅ **Fixed Dynamic Class Names**: Now handles changing CSS class names
-- ✅ **Enhanced Error Handling**: Comprehensive exception handling
-- ✅ **Professional Structure**: Object-oriented design
-- ✅ **Comprehensive Testing**: Unit tests with good coverage
-- ✅ **CI/CD Integration**: Automated testing and quality checks
-- ✅ **Command Line Interface**: Multiple usage options
-- ✅ **Logging System**: Detailed logging for debugging
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Development Setup
-
-```bash
-# Clone your fork
-git clone https://github.com/your-username/python-beautifulsoup-web-scraper.git
-cd python-beautifulsoup-web-scraper
-
-# Install in development mode
-pip install -e .
-pip install -r requirements.txt
-
-# Install development tools
-pip install pytest black isort flake8 mypy
-
-# Run tests
-pytest tests/
-```
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
-## ⚠️ Important Notes
-
-- **Website Dependency**: This scraper depends on YallaKora's website structure
-- **Rate Limiting**: Be respectful with requests to avoid being blocked
-- **Legal Compliance**: Ensure you comply with the website's terms of service
-- **Data Usage**: Use scraped data responsibly and ethically
-
----
-
-## 🆘 Support
-
-If you encounter any issues:
-
-1. **Check the logs**: Look at `scraper.log` for detailed error information
-2. **Review Issues**: Check [GitHub Issues](https://github.com/KhalilAmamri/python-beautifulsoup-web-scraper/issues)
-3. **Create an Issue**: Provide detailed information about the problem
-4. **Community**: Join discussions and help others
-
----
-
-## 🌟 Show Your Support
-
-If this project helped you, please ⭐ **star** the repository and consider:
-
-- 🍴 **Forking** the project
-- 📝 **Contributing** improvements
-- 🐛 **Reporting** bugs
-- 💡 **Suggesting** new features
-
----
-
-**Made with ❤️ by [Khalil Amemri](https://github.com/KhalilAmamri)**
+Note: If you still see folders like `src/`, `tests/`, `.github/`, or files like `setup.py`, `cli.py`, they are leftovers from an older advanced version. You can ignore them or delete them manually. Only `scraper.py`, `requirements.txt`, `data/`, `LICENSE`, and this `README.md` are needed now.
+**Made with ❤️ by [Khalil Amamri](https://github.com/KhalilAmamri)**
